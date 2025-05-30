@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div style="background-color: rgba(244, 244, 244, 0.8); display:grid; grid-template-columns: 0.3fr 2fr 0.3fr;">
+    <div class="grid-item border-0" style="background-color: rgba(244, 244, 244, 0.8); position:sticky; top:135px ; height: 50vh;padding:0;box-sizing: border-box; z-index:0 ;">
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterfiction')}}" method="post">
+                <button class="btndarker text-start">
+                    Fiction
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filternovel')}}" method="post">
+                <button class="btndarker text-start">
+                    Novel
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterstorybook')}}" method="post">
+                <button class="btndarker text-start">
+                    Storybook
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterhistory')}}" method="post">
+                <button class="btndarker text-start">
+                    History
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterpoetry')}}" method="post">
+                <button class="btndarker text-start">
+                    Poetry
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="grid-item border-0" style="margin-top:0;z-index:1; padding-left:0; padding-right: 0;">
+        <div>
+            <a name="add" href="/post">
+                <button class="btn btn-success">
+                    Add Post
+                </button>
+            </a>
+        </div>
+        {% for post in posts %}
+        <div style="padding:10px;border-color: white; border-radius: 25px; display: grid; grid-template-columns: 30px 1fr; padding:0; min-width: 180px; min-height:140px; background-color: white;" class="grid-item">
+            <div style="display:grid; grid-template-rows: 15px 50px 50px; align-items:center; padding:0; align-content:center;margin-left:5px;"class="container">
+                <p style="font-size: 15px; margin:0">{{post.totalvote}}</p>
+                <a class="upvote" href={{url_for('upvote', postid=post.id)}} method="post" >
+                    <svg type="submit" class="btn btn-primary" name="upvote" xmlns="http://www.w3.org/2000/svg" style = "padding:0; background-color: white; border:none;color: black" fill="currentColor" width="32" height="32" viewBox="0 0 16 16">
+                        <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
+                        <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
+                    </svg>
+                </a>
+                <a class="downvote" href={{url_for('downvote', postid=post.id)}} method="post">
+                    <svg type="button" class="btn btn-primary" name="downvote" onclick="downvote()" style="padding:0; background-color: white; border:none; color:black;" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 16 16">
+                        <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                    </svg>
+                </a>
+            </div>
+            <div>
+                    <div style="padding:10px;margin:0; border:none;" class="grid-item">
+                        <div style="display:grid; grid-template-columns: auto auto; align-items:center; margin-bottom:10px; margin-left: 0; margin-right: 10px;">
+                            <div>
+                                <button class="name" style="width: fit-content;display:grid; grid-template-columns: 30px 1fr;" onclick="location.href='{{url_for('findprofile', userid = post.user_id, username = post.username)}}'" >
+                                    <div class="col-1"><img src="https://www.reshot.com/preview-assets/icons/HEXSG3N6YQ/reading-newspaper-HEXSG3N6YQ.svg" style = "height:30px;width:30px;display:block;"></div>
+                                    <div style="margin-left:10px; font-size: 15px; font-weight:500;"class="col-2 text-start">{{ post.username }}</div>
+                                </button>
+                            </div>
+                            {% if post.username == currentusername %}
+                            <div class="text-end">
+                                <button class="btn btn-danger" style="width: fit-content;" onclick="location.href='{{url_for('deletepost', postid=post.id)}}'" >
+                                    Delete Post
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>
+                <a style="text-decoration: none; color: black;" href={{url_for('bigpost', username = post.username, postid=post.id)}}>
+                        <div class="text-start" style="font-size:17px; font-weight:bold;">
+                            {{ post.title }}
+                        </div>
+                        <div class="text-start" style="font-size:15px;" >
+                            {{post.subject}}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="grid-item border-0" style="background-color: rgba(244, 244, 244, 0.8); position:sticky; top:135px ; height: 80vh;padding:0;box-sizing: border-box; z-index:0; margin-left: 10px;">
+        <nav>
+            <h3 class="text-start"style="color: rgba(100, 100, 100, 0.8)">Followings</h3>
+            <ul class="overflow-auto " style="max-height: 80vh; list-style-type: none; padding:0;">
+                {% for friend in friends %}
+                    <li>
+                        <a style="text-decoration: none; border:none;" href={{url_for('findprofile', userid = friend.friendid, username = friend.friendname)}}>
+                            <button class="btndarker text-start" >
+                                {{friend.friendname}}
+                            </button>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+
+</div>
+{% endblock content %}
+{% block username %}
+{{username}}
+{% endblock username %}
+{% block pname %}
+<li><a class="dropdown-item" href={{url_for('findprofile', userid = userid, username = username)}}>Profile</a></li>
+{% endblock pname %}

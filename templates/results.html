@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div style="display:grid; grid-template-columns: 0.3fr 2fr 0.3fr ;background-color: rgba(244, 244, 244, 0.8);">
+    <div class="grid-item border-0" style="background-color: rgba(244, 244, 244, 0.8); position:sticky; top:135px ; height: 50vh;padding:0;box-sizing: border-box; z-index:0 ;">
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterfiction')}}" method="post">
+                <button class="btndarker text-start">
+                    Fiction
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filternovel')}}" method="post">
+                <button class="btndarker text-start">
+                    Novel
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterstorybook')}}" method="post">
+                <button class="btndarker text-start">
+                    Storybook
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterhistory')}}" method="post">
+                <button class="btndarker text-start">
+                    History
+                </button>
+            </a>
+        </div>
+        <div class="text-start fs-3 fw-bold">
+            <a href="{{url_for('filterpoetry')}}" method="post">
+                <button class="btndarker text-start">
+                    Poetry
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="grid-item border-0" style="margin-top:0;" >
+        {% if results|length %}
+            <h2>Profiles</h2>
+            <br>
+        {% else %}
+            <h2>Can't found profile</h2>
+        {% endif %}
+        {% for result in results %}
+        <a style="text-decoration: none; color: black;" href={{url_for('findprofile', userid = result.id, username = result.username)}}>
+            <div style="display: grid; grid-template-columns: auto 2fr; border-width:1px;border-style:solid;padding-top:10px; border-radius:25px; background-color:white; margin-bottom: 10px;">
+                <div class="d-flex align-content-center">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" style="height:100px;"title="" alt="">
+                </div>
+                <div class="container" style="display: grid; grid-template-rows: auto auto auto">
+                    <div>
+                        <div style="display:grid; grid-template-columns: auto auto;">
+                            <h5 class="dark-color text-start">{{ result.username }}</h5>
+                            {% if result.username not in friends|map(attribute="friendname") %}
+                                {% if username == result.username %}
+                                {% else %}
+                                    <a style="text-decoration:none; color: red; margin-right:30px;" class="text-end" href={{url_for('follow', userid = result.id, username = result.username)}} method="post">
+                                        <button class="btn btn-success"onclick="deletepost()">
+                                            Follow
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                <a style="text-decoration:none; color: red; margin-right:30px;" class="text-end" href={{url_for('unfollow', userid = result.id, username = result.username)}} method="post">
+                                    <button class="btn btn-success"onclick="deletepost()">
+                                        Unfollow
+                                    </button>
+                                </a>
+                            {% endif %}
+                        </div>
+                        <p class="text-start" style="font-size: 14px; margin-bottom: 5px;">{{ result.bio }}</p>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr;">
+                            <div>
+                                <label style="font-size: 14px; margin-bottom: 5px;" >Followers</label>
+                                <p style="font-size: 14px; margin-bottom: 5px;" >{{ result.followers}}</p>
+                            </div>
+                            <div>
+                                <label style="font-size: 14px;" >Follows</label>
+                                <p style="font-size: 14px;" >{{result.followings}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+        {% if postinfos|length %}
+            <h2 style="margin-top: 5px; margin-bottom:5px;">Posts</h2>
+        {% else %}
+            <h2>Can't found post</h2>
+        {% endif %}
+        {% for postinfo in postinfos %}
+            <div style="padding:0 10px 10px 10px; border-radius: 25px; display: grid; grid-template-columns: 30px 1fr; min-width: 180px; background-color:white;" class="grid-item">
+                <div style="display:grid; grid-template-rows: 15px 50px 50px; align-items:center; padding:0; align-content:center;" class="container">
+                    <p style="font-size: 15px; margin:0">{{postinfo.totalvote}}</p>
+                    <a class="upvote" href={{url_for('upvote', postid=postinfo.id)}} method="post" >
+                        <svg type="submit" class="btn btn-primary" name="upvote" xmlns="http://www.w3.org/2000/svg" style = "padding:0; background-color: white; border:none;color: black" fill="currentColor" width="32" height="32" viewBox="0 0 16 16">
+                            <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
+                            <path d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
+                        </svg>
+                    </a>
+                    <a class="downvote" href={{url_for('downvote', postid=postinfo.id)}} method="post">
+                        <svg type="button" class="btn btn-primary" name="downvote" onclick="downvote()" style="padding:0; background-color: white; border:none; color:black;" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 16 16">
+                            <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
+                        </svg>
+                    </a>
+                </div>
+                <div>
+                    <a style="text-decoration: none; color: black;" href={{url_for('bigpost', username = postinfo.username, postid=postinfo.id)}}>
+                        <div style="padding:10px;margin:0; border:none;" class="grid-item">
+                            <div style="display:grid; grid-template-columns: 30px 1fr; align-items:center; margin-bottom:10px;"class="container">
+                                <div class="col-1"><img src="https://www.reshot.com/preview-assets/icons/HEXSG3N6YQ/reading-newspaper-HEXSG3N6YQ.svg" style = "height:30px;width:30px;display:block;"></div>
+                                <div style="margin-left:10px; font-size: 15px; font-weight:500;"class="col-2 text-start">{{ postinfo.username }}</div>
+                            </div>
+                            <div class="text-start" style="font-size:17px; font-weight:bold;">
+                                {{ postinfo.title }}
+                            </div>
+                            <div class="text-start" style="font-size:15px;" >
+                                {{postinfo.subject}}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+    {% endfor %}
+    </div>
+    <div class="grid-item border-0" style="background-color: rgba(244, 244, 244, 0.8); position:sticky; top:135px ; height: 80vh;padding:0;box-sizing: border-box; z-index:0; margin-left: 10px;">
+        <nav>
+            <h3 class="text-start"style="color: rgba(100, 100, 100, 0.8)">Followings</h3>
+            <ul class="overflow-auto " style="max-height: 80vh; list-style-type: none; padding:0;">
+                {% for friend in friends %}
+                    <li>
+                        <a style="text-decoration: none; border:none;" href={{url_for('findprofile', userid = friend.friendid, username = friend.friendname)}}>
+                            <button class="btndarker text-start" >
+                                {{friend.friendname}}
+                            </button>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock content %}
+{% block username %}
+{{username}}
+{% endblock username %}
+{% block pname %}
+<li><a class="dropdown-item" href={{url_for('findprofile', userid = userid, username = username)}}>Profile</a></li>
+{% endblock pname %}
+

@@ -1,0 +1,246 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <script>
+        function openForm() {
+        document.getElementById("mydiv").style.display = "block";
+        }
+
+        function closeForm() {
+        document.getElementById("mydiv").style.display = "none";
+        }
+
+        function openPasswordForm() {
+        document.getElementById("changepassword").style.display = "block";
+        }
+        function closePasswordForm() {
+        document.getElementById("changepassword").style.display = "none";
+        }
+    </script>
+    <div style="background-color: rgba(244, 244, 244, 0.8);">
+        <div style="display: grid; grid-template-rows: auto auto;">
+            <div style="margin-top: 20px;">
+                <section class="section about-section gray-bg d-flex justify-content-center" id="about">
+                    <div class="container" style="margin:0 ; padding:0;">
+                        <div class="row align-items-center flex-row-reverse justify-content-center" style="box-shadow: 0px 20px 9px -14px rgba(0,0,0,0.33)">
+                            <div class="col-sm-6">
+                                <div>
+                                    <div style="display: grid; grid-template-columns: auto auto auto">
+                                        <h3 class="dark-color">{{username}}</h3>
+                                        {% if profilesetting == 1 %}
+                                        <div style="display:grid ; grid-template-columns : 1fr 0.2fr 1fr">
+                                            <button class="btn btn-success" onclick="openForm()">Edit Profile</button>
+                                            <div></div>
+                                            <button class="btn btn-success" onclick="openPasswordForm()">Change Password</button>
+                                            <div></div>
+                                        </div>
+
+                                        {% elif friend|length > 0 %}
+                                        <a style="text-decoration:none; color: red;" href={{url_for('unfollow', userid = userid, username = username)}} method="post">
+                                            <button class="btn btn-success"onclick="deletepost()">
+                                                Unfollow
+                                            </button>
+                                        </a>
+                                        {% else %}
+                                        <a style="text-decoration:none; color: red;" href={{url_for('follow', userid = userid, username = username)}} method="post">
+                                            <button class="btn btn-success"onclick="deletepost()">
+                                                Follow
+                                            </button>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                    <p style="margin-top:5px">{{bio}}</p>
+                                    <div class="row about-list">
+                                        <div class="col-xs-6 container" style="display:grid, grid-template-columns: auto auto auto auto">
+                                            <div class="row">
+                                                <div class="col" style="display: inline">
+                                                    <label>Birthday</label>
+                                                    <p>{{day}}.{{month}}.{{year}}</p>
+                                                </div>
+                                                <div class="col" style="display: inline">
+                                                    <label>Age</label>
+                                                    <p>{{age}}</p>
+                                                </div>
+                                                <div class="col" style="display: inline">
+                                                    <label>Nationality</label>
+                                                    <p>{{country}}</p>
+                                                </div>
+                                                <div class="col" style="display: inline">
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col" style="display:inline">
+                                                    <label>Followers</label>
+                                                    <p>{{followers}}</p>
+                                                </div>
+                                                <div class="col" style="display:inline">
+                                                    <label>Follows</label>
+                                                    <p>{{followings}}</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="d-flex justify-content-center bd-highlight">
+                                    <div class="bd-highlight" style="padding-bottom :0px;" >
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" style="width: 70%;"title="" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="form-popup" style="display: none;
+            position: absolute;
+            width: 60vh;
+            height: 90vh;
+            bottom: -10%;
+            right: 35%;
+            border: none;
+            z-index: 9;
+            background-color: transparent;
+
+            "id="mydiv">
+                <form action="/editprofile" onsubmit="return closeForm()" class="form-container" method="post">
+                    <div class="mask d-flex align-items-center h-100">
+                        <div class="container h-100">
+                        <div class="row d-flex justify-content-end align-items-center h-100">
+                            <div class="col-lg-15">
+                            <div class="card" style="border-radius: 15px;">
+                                <div class="card-body p-4">
+                                    <h2 class="text-uppercase text-center mb-2">Edit Profile</h2>
+                                    <form action="/login" method="post">
+                                        <div class="form-outline mb-3">
+                                            <textarea autocomplete="off" autofocus class="form-control form-control-lg" name="bio" placeholder="Change Biography" type="text" style="resize:none;"></textarea>
+                                        </div>
+                                        <div class="form-outline mb-3">
+                                            <input class="form-control form-control-lg" name="username" placeholder="Change Username" type="text">
+                                        </div>
+                                        <div class="form-outline mb-3">
+                                            <input class="form-control form-control-lg" name="name" placeholder="Change Name" type="text">
+                                        </div>
+                                        <div class="form-outline mb-3">
+                                            <input class="form-control form-control-lg" name="surname" placeholder="Change Surname" type="text">
+                                        </div>
+                                        <div class="form-outline mb-3">
+                                            <input class="form-control form-control-lg" required name="password" placeholder="Current Password" type="password">
+                                        </div>
+                                        <div style="display:grid ; grid-template-columns: 1fr 0.1fr 1fr; grid-template-rows : 1fr;">
+                                            <button type="submit" class="btn btn-success">Save</button>
+                                            <div></div>
+                                            <button type="button" class="btn btn-success cancel" onclick="closeForm()">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </form>
+            </div>
+            <div class="form-popup" style="display: none;
+            position: absolute;
+            bottom: 50%;
+            right: 40%;
+            border: none;
+            z-index: 9;
+            background-color: transparent;
+
+            "id="changepassword">
+                <form action="/changepassword" onsubmit="return closePasswordForm()" class="form-container" method="post">
+                    <div class="mask d-flex align-items-center h-100">
+                        <div class="container h-100">
+                        <div class="row d-flex justify-content-end align-items-center h-100">
+                            <div class="col-lg-15">
+                            <div class="card" style="border-radius: 15px;">
+                                <div class="card-body p-4">
+                                    <h2 class="text-uppercase text-center mb-2">Change Password</h2>
+                                    <form action="/login" method="post">
+                                        <div class="form-outline mb-3">
+                                            <input class="form-control form-control-lg" required name="currentpassword" placeholder="Current Password" type="password">
+                                        </div>
+                                        <div class="form-outline mb-3">
+                                            <input class="form-control form-control-lg" required name="newpassword" placeholder="New Password" type="password">
+                                        </div>
+                                        <div style="display:grid ; grid-template-columns: 1fr 0.1fr 1fr; grid-template-rows : 1fr;">
+                                            <button type="submit" class="btn btn-success">Save</button>
+                                            <div></div>
+                                            <button type="button" class="btn btn-success cancel" onclick="closePasswordForm()">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </form>
+            </div>
+            {% if posts|length < 1 %}
+                <div class="hasntposted">
+                    <h1>Hasn't Posted Yet!</h1>
+                </div>
+            {% else %}
+                {% for post in posts %}
+                <div class="d-flex justify-content-center">
+                    <div style="padding:10px;width: 70%; border-radius: 25px; display: grid; grid-template-columns: 30px 1fr; padding:0; background-color:white;" class="grid-item">
+                        <div style="display:grid; grid-template-rows: 15px 50px 50px; align-items:center; padding:0; align-content:center;"class="container">
+                            <p style="font-size: 15px; margin:0">{{post.totalvote}}</p>
+                            <a href={{url_for('upvote2', postid=post.id)}} method="post">
+                                <svg type="submit" class="btn btn-primary" name="upvote" style="padding:0; background-color: white; border:none; color:black;" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+                                </svg>
+                            </a>
+                            <a href={{url_for('downvote2', postid=post.id)}} method="post">
+                                <svg type="button" class="btn btn-primary" name="downvote" onclick="downvote()" style="padding:0; background-color: white; border:none; color:black;" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="32" height="32" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div>
+                            <div style="padding:10px;margin:0; border:none;" class="grid-item">
+                                <div style="display:grid; grid-template-columns: auto auto; align-items:center; margin-bottom:10px;"class="container">
+                                    <div>
+                                        <a style="text-decoration:none; color:black;display:grid; grid-template-columns: 30px 1fr;" href={{url_for('findprofile', userid = post.user_id, username = post.username)}}>
+                                            <div class="col-1"><img src="https://www.reshot.com/preview-assets/icons/HEXSG3N6YQ/reading-newspaper-HEXSG3N6YQ.svg" style = "height:30px;width:30px;display:block;"></div>
+                                            <div style="margin-left:10px; font-size: 15px; font-weight:500;"class="col-2 text-start">{{ post.username }}</div>
+                                        </a>
+                                    </div>
+                                    {% if post.username == currentuser %}
+                                        <a style="text-decoration:none; color: red;" class="text-end" href={{url_for('deletepost', postid=post.id)}} method="post">
+                                            <button class="btn btn-danger"onclick="deletepost()">
+                                                Delete Post
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                        <a style="text-decoration: none; color: black;" href={{url_for('bigpost', username = post.username, postid=post.id)}}>
+                                <div class="text-start" style="font-size:17px; font-weight:bold;">
+                                    {{ post.title }}
+                                </div>
+                                <div class="text-start" style="font-size:15px;" >
+                                    {{post.subject}}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    </div>
+                    <div></div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+{% block username %}
+{{currentuser}}
+{% endblock username %}
+{% block pname %}
+<li><a class="dropdown-item" href={{url_for('findprofile', userid = currentuserid, username = currentuser)}}>Profile</a></li>
+{% endblock pname %}

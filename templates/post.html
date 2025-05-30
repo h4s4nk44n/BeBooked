@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container" style="background-color: rgba(244, 244, 244, 0.8);">
+    <div style="z-index:1;">
+        <form action="/post" method="post">
+            <div style="display:grid; grid-template-columns: 1fr 3fr 1fr;margin-top: 20px;">
+                <div></div>
+                <select class="form-select" name="booktype" required onfocus='this.size=1;' onblur='this.size=0;' onchange='this.size=1; this.blur();'>
+                    <option class="option" value="" disabled selected>Type</option>
+                    <option class="option" value="fiction">Fiction</option>
+                    <option class="option" value="novel">Novel</option>
+                    <option class="option" value="storybook">Storybook</option>
+                    <option class="option" value="history">History</option>
+                    <option class="option" value="poetry">Poetry</option>
+                </select>
+                <div></div>
+            </div>
+            <div style="grid-template-rows: auto auto auto auto; grid-template-columns: 1fr;">
+                <div style="display: grid; justify-content: center; margin-top: 20px;">
+                    <textarea style=" resize:none;" type="text" class="form-control" name="title" required rows="1" cols="100" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1"></textarea>
+                </div>
+                <div style="display: grid; justify-content: center; margin-top: 20px;">
+                    <textarea class="form-control" maxlength="500" id="subject" name="subject" required placeholder="Write the subject..." rows="5" cols="100" style="resize:none"></textarea>
+                </div>
+                <div style="display: grid; justify-content: center; margin-top: 20px;">
+                    <textarea  class="form-control" maxlength="8000" id="postcontent" name="postcontent" required placeholder="Write your content..." rows="25" cols="100" style="resize:none"></textarea>
+                </div>
+                <div style="display: grid; justify-content: center; margin-top: 20px;">
+                    <button class="btn btn-success" type="submit">Post</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+{% block username %}
+{{username}}
+{% endblock username %}
+{% block pname %}
+<li><a class="dropdown-item" href={{url_for('findprofile', userid = userid, username = username)}}>Profile</a></li>
+{% endblock pname %}

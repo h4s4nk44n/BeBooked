@@ -1,0 +1,104 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 200px 1fr 400px;
+    grid-template-rows: 1fr;
+}
+.grid-item {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px 15%;
+    font-size: 30px;
+    text-align: center;
+  }
+
+.media {
+    display: inline;
+}
+#mydiv {
+    position: absolute;
+    z-index: 9;
+    background-color: #f1f1f1;
+    border: 1px solid #d3d3d3;
+    text-align: center;
+  }
+
+  #mydivheader {
+    padding: 10px;
+    cursor: move;
+    z-index: 10;
+    background-color: #2196F3;
+    color: #fff;
+  }
+  .gradient-custom-3 {
+    /* fallback for old browsers */
+    background: #84fab0;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, rgba(145, 98, 32, 0.5), rgba(120, 91, 50, 0.5));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, rgba(145, 98, 32, 0.5), rgba(120, 91, 50, 0.5))
+    }
+.dropdown-item:active{
+  background-color: green;
+
+}
+.btndarker{
+  color:black;
+  background-color: rgba(244, 244, 244, 0.8);
+  border-radius:5px;
+  border-style: solid;
+  border-color: rgba(244, 244, 244, 0.8);
+  width: 250px;
+  font-size: 15px;
+  padding:10px ;
+  text-align: center;
+  transition: 0.15s;
+  border-radius: 15px;
+  font-weight: 500;
+}
+.btndarker:hover{
+  color:white;
+  background-color: green;
+}
+
+.form-control:focus {
+  border-color: green;
+  box-shadow: 0 0 0 0.25rem rgba(60,179,113, 0.25);
+}
+
+.form-select:focus {
+  border-color: green;
+  box-shadow: 0 0 0 0.25rem rgba(60,179,113, 0.25);
+}
+
+option:checked,
+option:hover  {
+  background-color: green;
+  box-shadow: 0 0 10px 100px rgba(60,179,113, 1) inset;
+  color:white;
+}
+
+.form-check-input:checked{
+  background-color: green;
+  box-shadow: 0 0 0 0.25rem rgba(60,179,113, 0.25);
+}
+.name{
+  font-size: 15px;
+  font-weight: 500;
+  border:none;
+  background-color: transparent;
+  text: black;
+}
+.comment{
+  text: black;
+  font-size: 15px;
+  background-color: transparent;
+}
+
+.hasntposted{
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
